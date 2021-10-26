@@ -1,0 +1,16 @@
+
+### Metadata
+GET http://localhost:4004/my-capp-app/$metadata
+
+
+###GET All Students
+GET http://localhost:4004/my-capp-app/Students
+
+###POST
+POST http://localhost:4004/my-capp-app/Students
+Content-Type: application/json
+
+{
+    "name" : "kaddu",
+    "age" : 34
+}
