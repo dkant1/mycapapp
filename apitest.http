@@ -11,6 +11,6 @@ POST http://localhost:4004/my-capp-app/Students
 Content-Type: application/json
 
 {
-    "name" : "kaddu",
+    "name" : "John Doe",
     "age" : 34
 }
