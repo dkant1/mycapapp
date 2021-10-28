@@ -58,12 +58,14 @@ Steps to create a CAP Node JS Project
 
    In the root of the project execute the build command to build the project. This command will create `gen` folder in root of project. The `gen/srv` folder will have `manifest.yml` file. The YAML file will be generated with all the dependencies like dependency on HANA service so that a `cf push` can happen.
    `cds build` will just build the `srv` module when executed in the dev environment because a `cds deploy --to hana` would mostly have been done already. We can then use `cf push` to push the `gen/srv` module after updating the manifest file with name of HDI container in services section.
-   Note: The services section somehow is empty after cds build step. Ideally it should have 'HANA service instance name' which was specified during the `cds deploy to hana` step but it is not picking it up.
+
+   _Note: The services section somehow is empty after cds build step. Ideally it should have 'HANA service instance name' which was specified during the `cds deploy to hana` step but it is not picking it up._
   
   `cds build --production`
    
    If cds build command is used with switch `--production` then the `gen` folder will have both `db` and `srv` subfolders. 
-   The `gen/db` subfolder will have details of HANA Deployer app which is just a vehicle for transporting HANA artifacts to CF and deploy them. This app can be stopped/deleted in CF once deployment is successful. 
+
+   The `gen/db` subfolder will have details of HANA Deployer app which is just a vehicle for transporting HANA artifacts to CF and deploy them. This app can be stopped/deleted in CF once deployment is successful. This folder will also have subfolder `src/gen` containing the HANA artifacts in `.hdbtable` and `.hdbview` etc. formats. 
    
    The `gen/srv` subfolder will have details of service module and can be pushed to CF as any other NodeJS app.
 
@@ -71,7 +73,9 @@ Steps to create a CAP Node JS Project
 
 * `cf push`
 
-   cd into the `gen/db` and `gen/srv` folder and then issue command `cf push`. It will push the db deployer app and srv app and bind the srv app to the HANA instance.
+    __Prerequisite__ : The HDI container needs to be created before hand since `cf push` does not create the dependent services specified in the `services` section of manifest file. Use the command `cf create-service hana hdi-shared <projectname-db>` to create the hdi container before pushing the db deployer app.
+
+   cd into the `gen/db` and `gen/srv` folder and then issue command `cf push`. It will push the db deployer app and srv app and bind the srv app to the HDI container instance.
 
 ## Additional Commands
 
